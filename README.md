@@ -57,6 +57,12 @@ $ tilde contrib --list
     feels
     writo
     # truncated for example's sake
+$ tilde contrib --bootstrap
+    alias botany='tilde contrib botany'
+    alias feels='tilde contrib feels'
+    alias writo='tilde contrib writo'
+    # truncated for example's sake
+    # For backwards compatability when included in ~/.bashrc as `source $(tilde contrib --bootstrap)`
 $ tilde contrib botany
     # ...runs botany
 $ vim cool_program
