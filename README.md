@@ -38,6 +38,7 @@ $ tilde help
    mail     check your tilde.town email
    page     alert ~vilmibm to an emergency
    poetry   generate poetry from cut-up text
+   submit   suggest that a program be added to contrib
    toot     post a message to the community mastodon
    tweet    post a message to the community twitter
    wiki     access or update the town wiki
@@ -58,6 +59,10 @@ $ tilde contrib --list
     # truncated for example's sake
 $ tilde contrib botany
     # ...runs botany
+$ vim cool_program
+$ tilde submit cool_program
+   You've submitted cool_program to ~vilmibm for review! check your tildemail
+   in a few days for an update.
 ```
 
 ## project goals
