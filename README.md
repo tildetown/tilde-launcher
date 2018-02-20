@@ -24,7 +24,7 @@ executable.
 
 an interaction with `tilde-launcher` should look something like this:
 
-```bash
+```
 $ tilde
     Welcome to tilde.town :) this program is your gateway to town-specific
     commands and features. Run tilde help to see the sort of things you can
