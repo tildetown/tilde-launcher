@@ -1,0 +1,74 @@
+#!/usr/bin/python2
+import argparse,sys,os,subprocess
+
+class TildeContrib(object):
+	def __init__(self,progdir):
+		self.progdir=progdir
+		pass
+
+	def __getattr__(self,k):
+		if k in ("list","bootstrap"):
+			return object.__getattr__(self,k)
+		return lambda x: os.system("/tilde/bin/{} {}".format(k," ".join(x)))
+
+	def list(self, x, inc=True):
+		cs = filter(None,subprocess.check_output(['/tilde/special/list']).split("\n"))
+		f = " ".join(x) if len(x)>0 else ""
+		ret = []
+		for c in cs:
+			if f in c:
+				ret.append(c)
+		if inc:
+			ret.extend(["list","bootstrap"])
+		return ret
+
+class TildeLauncher:
+
+	COMMANDS = ["help","contrib","chat"]
+
+	USAGE = dict(help="\n  Displays this menu",contrib=" <program>\n  Your gateway to programs made by townies,\n  for townies!",chat="\n  An IRC chatroom.")
+
+	def __init__(self,prog_dir):
+		self.progdir = prog_dir
+		self.tc = TildeContrib(prog_dir)
+
+	def base(self):
+		print """   Welcome to tilde.town :) this program is your gateway to town-specific
+   commands and features. Run tilde help to see the sort of things you can do."""
+
+	def help(self,argv):
+		commands_to_display = []
+		if len(argv)==0:
+			commands_to_display = self.COMMANDS
+		else:
+			commands_to_display = [i for i in argv if i in self.COMMANDS]
+		for cmd in commands_to_display:
+			print "tilde {}{}".format(cmd,self.USAGE[cmd])
+
+	def contrib(self,argv):
+		if not argv:
+			argv = ["list"] # default to listing
+		if argv[0]=="list":
+			print "Commands:"
+			for c in self.tc.list(argv[1:]):
+				print "  tilde contrib "+c
+		elif argv[0]=="bootstrap":
+			for c in self.tc.list([],False):
+				print("alias {0}=\"tilde contrib {0}\"".format(c))
+		else:
+			getattr(self.tc,argv[0])(argv[1:])
+
+	def chat(self,argv):
+		os.system("/tilde/special/chat")
+
+if __name__=="__main__":
+	tl = TildeLauncher("/tilde/bin")
+	argv = sys.argv[1:]
+	if len(argv)==0:
+		tl.base()
+	else:
+		if not hasattr(tl,argv[0]):
+			print "   Unknown command %s!"
+			tl.help([])
+
+		getattr(tl,argv[0])(argv[1:])

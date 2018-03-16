@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /tilde/bin
+ls | tr '\t' '\n'
